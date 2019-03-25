@@ -1,6 +1,8 @@
 const fs = require('fs');
 const file = fs.createWriteStream('./output.json');
 const faker = require('faker');
+const Stream = require('stream');
+
 
 const firstName = faker.name.findName();
 const city = faker.address.city();
@@ -13,8 +15,9 @@ const obj = {
 const batch = 10000;
 let counter = 8000;
 
-async function streams()  {
+async function writeLargeFile()  {
     let data = [];
+    const src = new Stream();
 
     if(counter>0) {
         for(i = batch; i>0; i--) {
@@ -29,7 +32,8 @@ async function streams()  {
         return;
     }
     if(!res) {
-    file.once('drain', streams);
+        src.emit('drain');
     }
+    file.once('drain', writeLargeFile)
 };
-streams();
+writeLargeFile();
