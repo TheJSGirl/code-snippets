@@ -1,0 +1,9 @@
+#node_modules
+node_modules/
+
+#output
+output.json
+
+# dummy data
+data.txt
+demo.txt
